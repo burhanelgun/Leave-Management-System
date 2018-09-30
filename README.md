@@ -1,5 +1,15 @@
 # Personnel-Leave-Management-System
-This is a dynamic web project for manage the leaves of personnels in a company. Java was used for server-side.JavaScript,Ajax,HTML,CSS and JQuery was used for client-side. 
+This is a dynamic web project for manage the leaves of personnels in a company. 
+
+#####Front End#####: JS, JQuery, AJAX and Bootstrap.  
+
+#####Back End#####: JAX-RS (Jersey) REST Services, JSON, Servlets,Log4j  
+
+#####Design Patterns#####: Singleton, Facade                           
+
+#####Server#####: Apache Tomcat 
+
+#####Database#####: MySQL 
 
 For running this project :
 
