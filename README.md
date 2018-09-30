@@ -1,15 +1,15 @@
 # Personnel-Leave-Management-System
 This is a dynamic web project for manage the leaves of personnels in a company. 
 
-####Front End JS, JQuery, AJAX and Bootstrap.  
+###### Front End : JS, JQuery, AJAX and Bootstrap.  
 
-#####Back End#####: JAX-RS (Jersey) REST Services, JSON, Servlets,Log4j  
+##### Back End JAX-RS (Jersey) REST Services, JSON, Servlets,Log4j  
 
-#####Design Patterns#####: Singleton, Facade                           
+##### Design Patterns: Singleton, Facade                           
 
-#####Server#####: Apache Tomcat 
+##### Server: Apache Tomcat 
 
-#####Database#####: MySQL 
+##### Database: MySQL 
 
 For running this project :
 
