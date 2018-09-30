@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<style>
+
+.hide{
+  display:none;
+}
+.show{
+  display:block;
+}
+
+.user-row {
+    margin-bottom: 14px;
+}
+.user-row:last-child {
+    margin-bottom: 0;
+}
+
+.table-user-information > tbody > tr {
+    border-top: 1px solid rgb(221, 221, 221);
+}
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
+
+.brand{
+	max-height: 30px;
+	
+}
+
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+
+ <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+     <a class="navbar-brand" href="."> <img class="brand" src="./images/32bit.jpg"></a>
+  	</div>
+    <ul id="navbarLinks" class="nav navbar-nav">
+      <li id="nav_history" onclick = "showLeaveHistory()" class="active"><a href="#"><span class="glyphicon glyphicon-calendar"></span> Leave History</a></li>
+      <li id="nav_leave_requests" ><a href="#leave_requests" onclick="showLeaveRequest()"> <span class="glyphicon glyphicon-bell"></span> Leave Requests</a></li>
+      <li id="nav_leave_messages" ><a href="#l" onclick="getMessages()"> <span class="glyphicon glyphicon-envelope"></span> Inbox</a></li>
+      <li id="nav_project_members"  onclick = "showProjectMembers()" ><a href="#"><span class="glyphicon glyphicon-list"></span> Project Members</a></li>
+      <li id="nav_show_personnel"><a href="#" onclick="showAllPersonnel()"><span class="glyphicon glyphicon-th-list"></span> Personnels</a></li>
+      <li id="nav_project_managers"><a href="#" onclick="getProjectManagers()"><span class="glyphicon glyphicon-tower"></span> Project Managers</a></li>
+      <li id="nav_add_leave"><a href="#" onclick="showDatePicker()"><span class="glyphicon glyphicon-send"></span> Send Leave Request</a></li>
+      <li id="nav_add_leave_days"><a href="#" onclick="showAddLeave()" ><span class="glyphicon glyphicon-pencil"></span> Add Leave Day</a></li>
+      <li id="nav_add_new_user" onclick = "addNewUserPageShow()" ><a href="#"><span class="glyphicon glyphicon-plus"></span> Add New User</a></li>
+      
+    </ul>
+     
+    <ul class="nav navbar-nav navbar-right">
+      <li><a id="nav_profile" onclick = "showProfile()" href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+      <li><a href="#" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    </ul>
+  </div>
+</nav> 
+	
+
+<!-- Admin tarafından user ekleme -->
+                         
+<form id="addNewUserForm" class="hide" style="    width: 30%; padding-left: 30px;">
+
+   <div class="form-group">
+    <label for="exampleInputEmail1">E-Mail</label>
+    <input type="text" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email">
+  </div>
+  
+   <div class="form-group">
+    <label for="exampleInputEmail1">Full Name</label>
+    <input type="text" class="form-control" id="fullName" name="fullName" aria-describedby="emailHelp" placeholder="Enter Full Name">
+  </div>
+  
+  
+   <div class="form-group">
+    <label for="exampleInputEmail1">Password</label>
+    <input type="password" class="form-control" id="password" name="password" aria-describedby="emailHelp" placeholder="Enter Password">
+  </div>
+  
+  
+  <div class="form-group">
+    <label for="exampleInputEmail1">Project Manager</label>
+    <input type="text" class="form-control" id="projectManager" name="projectManager" aria-describedby="emailHelp" placeholder="Enter Project Manager">
+  </div>
+  
+  <div class="form-group">
+    <label for="exampleInputEmail1">Department</label>
+    <input type="text" class="form-control" id="department" name="department" aria-describedby="emailHelp" placeholder="Enter Department">
+  </div>
+  
+  <div class="form-group">
+    <label for="exampleInputEmail1">Total Leave Days</label>
+    <input type="text" class="form-control" id="totalLeaveDays" name="totalLeaveDays" aria-describedby="emailHelp" placeholder="Enter Total Leave Days">
+  </div>
+  
+  <div class="form-group">
+      Admin: <input type="checkbox" id="adminCheckBox">
+	    <br>
+	  Project Manager: <input type="checkbox" id="projectManagerCheckBox" >
+	    <br>
+	  Employee: <input type="checkbox" id="employeeCheckBox">
+  </div>
+  
+  <div class="form-group">
+    <button id="add" type="button" onclick="addNewUser()" class="btn btn-primary">Add User</button>
+  </div>
+  
+   
+</form>     
+
+
+	<table id="datepicker" class="hide" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                From:
+            </td>
+            <td>
+                <input type="text" id="txtFrom" />
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                To:
+            </td>
+            <td>
+                <input type="text" id="txtTo" />
+            </td> 
+            <td><button id="sendLeaveRequest" class="hide" type="button" onclick="addLeave()" class="btn btn-primary">Send!</button> </td>
+        </tr>
+    </table>
+    
+
+	
+<div class="container">
+ <div id="profile" class="well col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 hide">
+      
+        <div class="row user-infos cyruxx">
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">User Profile</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                           
+                            <div class="col-xs-2 col-sm-2 hidden-md hidden-lg">
+                                <img class="img-circle"
+                                     src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50"
+                                     alt="User Pic">
+                            </div>
+                           	 <div class="col-xs-10 col-sm-10 hidden-md hidden-lg">
+                                <h2 id="user_name"> </h2><br>
+          
+                            </div>
+                            
+                           		<br><br><br>
+                         
+                                <table id= "profile_table" class="table table-user-information">
+                                    <tbody>
+                                    <tr>
+                                        <td id="user_role">User level: </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td id="user_email">E-mail: </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td id="user_department">Department: </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td id="project_manager_email">Project Manager E-mail: </td>
+                                       
+                                    </tr>
+                                    <tr>
+                                        <td id="total_leave_days" >Total Leave Days: </td>                               
+                                    </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                     <div class="panel-footer">
+
+			 <div class="panel-footer">
+
+                        <button class="btn btn-sm btn-primary" type="button"
+                                data-toggle="tooltip"
+                                data-original-title="Send message to user"><i class="glyphicon glyphicon-envelope"></i></button>
+                        <span class="pull-right">
+                            <button class="btn btn-sm btn-warning" type="button"
+                                    data-toggle="tooltip"
+                                    data-original-title="Edit this user"  onclick="showUpdateUserPage()" ><i class="glyphicon glyphicon-edit"></i></button>
+                    
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Personnel table -->
+<div id="personnelTableDiv" class="container hide" style="width: 70%;">
+  <h2>Personnels</h2>     
+    <table id="personnelTable" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>Department</th>
+        <th style="width: 12%;">Project Manager's</th>
+        <th style="width: 12%;">Remaining Leaves</th>
+        <th style="width: 8%;">Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic olarak doldurulacak -->   
+    </tbody>
+  </table>
+</div>
+
+
+<!-- User update sayfasi -->
+<form id="updateUserForm" class="hide" style="    width: 30%; padding-left: 30px;">
+
+   <div class="form-group">
+    <label for="exampleInputEmail1">Old Password</label>
+    <input type="password" class="form-control" id="oldpassword" name="password" aria-describedby="emailHelp" placeholder="Enter Password">
+  </div>
+  
+     <div class="form-group">
+    <label for="exampleInputEmail1">New Password</label>
+    <input type="password" class="form-control" id="newpassword" name="password" aria-describedby="emailHelp" placeholder="Enter Password">
+  </div>
+  
+  <div class="form-group">
+    <button id="update" type="button" onclick="updateUser()" class="btn btn-primary">Add User</button>
+  </div>
+
+   
+</form>     
+
+
+
+<!-- Project manager table -->
+
+<div id="pmanagerTableDiv" class="container hide" style="width: 70%;">
+  <h2>Project Managers</h2>     
+    <table id="pmanagerTable" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>Department</th>
+        <th>Remove</th>
+        <th>Contact</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic olarak doldurulacak -->   
+    </tbody>
+  </table>
+</div>
+
+
+
+
+<!-- Leave Request table for projectManager and Admin -->
+
+<div id="leaveRequestTableDiv" class="container hide" style="width: 70%;">
+  <h2>Leave Requests</h2>     
+    <table id="leaveRequestTable" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th style="width: 10%;">Begin Date</th>
+        <th style="width: 10%;">End Date</th>
+        <th style="width: 8%;">Leave Days</th>
+        <th>Leave History</th>
+        <th>Accept</th>
+        <th>Decline</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic olarak doldurulacak -->   
+    </tbody>
+  </table>
+</div>
+
+<!-- İzin geçmişi -->
+<div id="ownLeaveTableDiv" class="container hide" style="width: 50%;">
+  <h2>Leave Records</h2>     
+    <table id="ownLeaveTable" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Begin Date</th>
+        <th>End Date</th>
+        <th>Status</th>
+        <th>Cancel</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic olarak doldurulacak -->   
+    </tbody>
+  </table>
+</div>
+
+<!-- ProjectManager in Employeers listesi -->
+<div id="employersTableDiv" class="container hide" style="width: 60%;">
+  <h2>My Project Team</h2>     
+    <table id="employersTable" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>E-Mail</th>
+        <th>Department</th>
+        <th style="width: 13%;">Remaining Leaves</th>
+        <th style="width: 7%;">Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic olarak doldurulacak -->   
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Admin ve proje yöneticisi tarafından görüntülenen izin geçmişi -->
+<div id="leaveHistoryTableDiv" class="container hide" style="width: 40%;">
+  <h2>Leave History</h2>
+  <h3 id="personnelEmail"></h3>     
+       
+    <table id="leaveHistoryTable" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Begin Date</th>
+        <th>End Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic olarak doldurulacak -->   
+    </tbody>
+  </table>
+</div>
+
+
+
+<!-- İzin hakedediş formu -->
+
+<form action="" class="hide" id="leaveDaysForm">
+ <div class="col">
+Total Leave Days: <input id="inputLeaveDays" type="number" min="1" max="30"><br>
+</div>
+Personnels:
+<select id="selectPersonEmail">
+</select>
+<input type="button" onclick="addLeaveAdmin()" value="Add Leave Days" class="btn btn-primary">
+</form>
+
+
+
+
+
+
+<!-- Mesaj gönderme formu -->
+<form id="messageForm" class="form-horizontal hide" role="form" method="post" action="index.php">
+	
+	<div class="form-group">
+		<label for="title" class="col-sm-2 control-label">Title</label>
+		<div class="col-sm-10">
+			<input type="text" class="form-control" id="title" name="title" placeholder="About Personnel ..... Leave" required>
+		</div>
+	</div>
+	<br><br><br>
+	<div class="form-group">
+		<label for="message" class="col-sm-2 control-label">Message</label>
+		<div class="col-sm-10">
+			<textarea id="content" class="form-control" rows="4" name="message" required></textarea>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<div class="col-sm-10 col-sm-offset-2">
+		<br>
+			<input id="submit" name="submit" value="Send" class="btn btn-primary">
+		</div>
+	</div>
+</form>
+
+
+<!-- Mesaj sayfası -->
+<div id="messagesTableDiv" class="container hide" style="width: 70%;">
+  <h2>Messages</h2>     
+    <table id="messagesTable" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Sender</th>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Remove</th>
+        <th>Reply</th>
+      </tr>
+    </thead>
+    <tbody>
+    <!-- Dynamic olarak doldurulacak -->   
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+
+<script type="text/javascript" src="./js/main.js"></script>
+<script type="text/javascript" src="./js/user.js"></script>
+<script type="text/javascript" src="./js/leave.js"></script>
+<script type="text/javascript" src="./js/message.js"></script>
+
+
+</body>
+</html>
