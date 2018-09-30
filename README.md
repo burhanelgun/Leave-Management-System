@@ -30,6 +30,6 @@ For running this project :
 8.Run the project with using the ```Tomcat v9.0 Server```.
 
 
-For more detail about the project please dowload the ```Leave Management System.pdf``` 
+For more detail about the project please download the ```LeaveManagementSystem.pdf``` 
 
 
