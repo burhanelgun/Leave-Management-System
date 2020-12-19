@@ -1,4 +1,4 @@
-# Personnel-Leave-Management-System
+# Leave-Management-System
 This is a dynamic web project for managing the leaves of personnels in a company. 
 
 ##### Front End : JS, JQuery, AJAX and Bootstrap.  
